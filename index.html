@@ -552,13 +552,11 @@
       border-radius: 6px;
     }
     .sp-logo[src=""] { display: none; }
-    .sp-logo-wide { width: auto; max-width: 130px; height: 38px; filter: none !important; object-fit: contain; }
-    .sp-ad--light { background: #f2ede6; }
-    .sp-ad--light:hover { background: #ede8e0; }
-    .sp-ad--light .sp-name { color: #1a1710 !important; }
-    .sp-ad--light .sp-tag { color: #706a60 !important; }
-    .sp-ad--light::before, .sp-ad--light::after { color: rgba(0,0,0,0.18); }
-    .sp-ad--light:hover::before, .sp-ad--light:hover::after { color: var(--amber); }
+    .sp-logo-wide { width: auto; max-width: 100px; height: 26px; filter: none !important; object-fit: contain; }
+    .sp-logo-frame {
+      background: rgba(255,255,255,0.92); border-radius: 5px;
+      padding: 5px 10px; display: flex; align-items: center; justify-content: center;
+    }
     .sp-ad:hover .sp-logo { transform: scale(1.08); }
     .sp-ad.plat .sp-logo { width: 44px; height: 44px; }
     .sp-ad.gold .sp-logo { width: 40px; height: 40px; }
@@ -1121,8 +1119,8 @@
           <img class="sp-logo" src="https://www.google.com/s2/favicons?domain=gen.xyz&sz=64" alt="XYZ" loading="lazy" />
           <span class="sp-name">.XYZ</span>
         </a>
-        <a href="https://www.seclance.com/" target="_blank" class="sp-ad silver sp-ad--light">
-          <img class="sp-logo sp-logo-wide" src="seclance.png" alt="SecLance" loading="lazy" />
+        <a href="https://www.seclance.com/" target="_blank" class="sp-ad silver">
+          <div class="sp-logo-frame"><img class="sp-logo sp-logo-wide" src="seclance.png" alt="SecLance" loading="lazy" /></div>
           <span class="sp-name">SecLance</span>
         </a>
       </div>
