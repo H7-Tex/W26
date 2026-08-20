@@ -101,6 +101,8 @@
     .btn-go{background:var(--acc);color:#2a1c05;border-top-color:rgba(255,255,255,.5);border-left-color:rgba(255,255,255,.5);
       border-right-color:var(--acc2);border-bottom-color:var(--acc2)}
     .btn-go:hover{background:#ffca6a;color:#2a1c05}
+    /* keep global link :link/:visited colors from bleeding into buttons */
+    .btn:link,.btn:visited{color:var(--text)} .btn-go:link,.btn-go:visited{color:#2a1c05}
 
     /* ── TOP BAR ──────────────────────────────────────────────── */
     #bar{position:sticky;top:0;z-index:500;display:flex;align-items:center;gap:1rem;
@@ -185,7 +187,9 @@
       border-top:2px solid #000;border-bottom:2px solid #000;padding:.6rem 0}
     .tick{display:flex;width:max-content;animation:scroll 32s linear infinite}
     .tick:hover{animation-play-state:paused}
-    .ti{display:flex;align-items:center;gap:2rem;padding:0 2rem;white-space:nowrap;font-size:1rem;
+    /* seamless marquee: each copy carries its trailing gap as right-padding, so the
+       seam spacing == internal spacing; -50% lands copy2 exactly where copy1 began */
+    .ti{display:flex;align-items:center;gap:2rem;padding:0 2rem 0 0;white-space:nowrap;font-size:1rem;
       text-transform:uppercase;color:var(--muted)}
     .ti b{font-family:var(--head);font-size:.88rem;color:var(--acc);text-shadow:var(--hard)}
     .ti .s{color:var(--subtle)}
@@ -226,8 +230,12 @@
     .win.q .win-bar{box-shadow:inset 0 -2px 0 var(--acc)}
     .win.f{transform:rotate(-.6deg)} /* the dossier sits slightly askew, taped on */
     .win.f .win-bar{box-shadow:inset 0 -2px 0 var(--red)}
-    .tape{position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-3deg);width:90px;height:22px;
-      background:rgba(255,217,59,.22);border:1px dashed rgba(255,217,59,.5);z-index:4}
+    /* a strip of translucent masking tape holding the tilted dossier on */
+    .tape{position:absolute;top:-13px;left:50%;transform:translateX(-50%) rotate(-2.5deg);width:118px;height:26px;z-index:4;
+      background:linear-gradient(rgba(228,208,150,.16),rgba(228,208,150,.09));
+      box-shadow:0 1px 3px rgba(0,0,0,.45);opacity:.9}
+    .tape::before,.tape::after{content:'';position:absolute;top:0;bottom:0;width:1px;background:rgba(228,208,150,.28)}
+    .tape::before{left:0}.tape::after{right:0}
     .stamp{display:inline-block;font-family:var(--head);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;
       color:var(--red);border:2px solid rgba(255,91,91,.5);padding:.28rem .6rem;transform:rotate(-2.5deg);margin-bottom:.8rem;
       box-shadow:inset 0 0 0 1px rgba(255,91,91,.12);text-shadow:var(--hard)}
@@ -343,24 +351,23 @@
     .access .cap{font-family:var(--head);font-size:.62rem;text-transform:uppercase;color:var(--muted);
       background:var(--sur2);padding:.45rem .8rem;box-shadow:var(--hard);text-shadow:var(--hard);
       border-top:2px solid var(--bl);border-left:2px solid var(--bl);border-right:2px solid var(--bd);border-bottom:2px solid var(--bd)}
+    /* round coin-button: a true circle face + a thin dark lip below = depth, presses down */
     .arcade{position:relative;display:inline-block;border:0;background:transparent;cursor:pointer;text-decoration:none;
-      width:132px;height:132px;filter:drop-shadow(3px 4px 0 #000)}
-    .arcade.sm{width:96px;height:96px}
-    .arcade .base{position:absolute;left:6%;right:6%;top:14%;bottom:0;border-radius:50%;
-      background:linear-gradient(#6b4e1a,#463109);box-shadow:0 3px 0 #2b1e06}
-    .arcade .top{position:absolute;inset:0 0 16% ;border-radius:50%;
-      background:radial-gradient(circle at 38% 30%,#ffd98a,#e8b24a 46%,#c98f2e 100%);
-      box-shadow:inset 0 5px 10px rgba(255,255,255,.55),inset 0 -9px 14px rgba(0,60,20,.55),0 0 28px var(--accglow);
-      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.05rem;
-      transition:transform .06s steps(2),box-shadow .06s steps(2)}
-    .arcade .top b{font-family:var(--pixel);font-size:1.5rem;color:#2a1c05;line-height:1;
-      text-shadow:1px 1px 0 rgba(255,255,255,.4)}
-    .arcade.sm .top b{font-size:1.05rem}
-    .arcade .top i{font-family:var(--head);font-style:normal;font-size:.42rem;text-transform:uppercase;color:#3a2807;letter-spacing:.05em}
-    .arcade.sm .top i{display:none}
-    .arcade:hover .top{filter:brightness(1.08)}
-    .arcade:active .top{transform:translateY(9%);
-      box-shadow:inset 0 4px 8px rgba(255,255,255,.4),inset 0 -5px 9px rgba(0,60,20,.6),0 0 18px var(--accglow)}
+      width:116px;height:126px;filter:drop-shadow(2px 3px 0 #000)}
+    .arcade.sm{width:82px;height:90px}
+    .arcade .base{position:absolute;top:10px;left:0;width:116px;height:116px;border-radius:50%;
+      background:linear-gradient(#6e4d13,#4a330d)}
+    .arcade.sm .base{top:8px;width:82px;height:82px}
+    .arcade .top{position:absolute;top:0;left:0;width:116px;height:116px;border-radius:50%;
+      background:radial-gradient(circle at 40% 32%,#ffe7ac,#eab653 55%,#cf9a34 100%);
+      box-shadow:inset 0 3px 6px rgba(255,255,255,.6),inset 0 -7px 11px rgba(110,72,12,.5),0 0 16px var(--accglow);
+      display:flex;align-items:center;justify-content:center;transition:transform .07s steps(2)}
+    .arcade.sm .top{width:82px;height:82px}
+    .arcade .top b{font-family:var(--pixel);font-size:1.35rem;color:#3a2807;line-height:1;
+      text-shadow:1px 1px 0 rgba(255,255,255,.45)}
+    .arcade.sm .top b{font-size:.9rem}
+    .arcade:hover .top{filter:brightness(1.06)}
+    .arcade:active .top{transform:translateY(7px)}
     .arcade:focus-visible{outline:3px solid var(--acc);outline-offset:6px}
 
     /* glitch (konami) */
@@ -724,7 +731,7 @@
     <div class="access rise" style="transition-delay:.1s;margin:0 auto 2rem">
       <span class="cap">Access site: press to enter</span>
       <a class="arcade" href="https://app.h7tex.com/events/h7ctf-2026" target="_blank" rel="noopener" aria-label="Register now — access the H7CTF 2026 event">
-        <span class="base"></span><span class="top"><b>▶</b><i>register</i></span>
+        <span class="base"></span><span class="top"><b>▶</b></span>
       </a>
     </div>
     <div class="cta-b rise" style="transition-delay:.14s">
@@ -749,7 +756,7 @@
   <div class="counter">you are player <span class="odo" id="odo">#0000007</span></div>
   <div class="legal">
     <a href="mailto:abu@h7tex.com">abu@h7tex.com</a> · H7CTF 2026 · Organized by H7Tex · SRMIST Chennai<br>
-    <span class="crt-note">India's most (un)serious CTF · best viewed on a CRT @ 800×600 · no cookies, only flags</span>
+    <span class="crt-note">India's most (un)serious CTF</span>
   </div>
 </footer>
 
