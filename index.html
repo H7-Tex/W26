@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<!--
-   ┌─────────────────────────────────────────────────────────┐
-   │  H7CTF 2026 · hand-typed on a warm keyboard, no ai slop  │
-   │  if you're reading source for a flag — bold. keep going. │
-   │  h7{v13w_s0urc3_1s_th3_0ld3st_r3c0n}  ...or is it?       │
-   └─────────────────────────────────────────────────────────┘
--->
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,11 +14,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet" />
-  <noscript><style>#boot{display:none!important}.rise{opacity:1!important;transform:none!important}</style></noscript>
+  <noscript><style>.rise{opacity:1!important;transform:none!important}</style></noscript>
   <style>
-    /* ═══ H7CTF//TERMINAL ═══ charcoal + phosphor amber. everything wears a
-       2px black shadow. pixelated. old-web blue links. built to feel found,
-       not generated. ═════════════════════════════════════════════════════ */
+    
     :root{
       --bg:#1c1c1c; --sur:#282828; --sur2:#303030; --sur3:#242424; --foot:#232323;
       --screen:#160f04;
@@ -46,7 +38,7 @@
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E");
     }
     body::before{content:'';position:fixed;inset:0;z-index:-1;background:var(--bg);opacity:.96}
-    /* CRT scanlines + vignette + flicker over everything */
+    
     body::after{content:'';position:fixed;inset:0;z-index:9000;pointer-events:none;
       background:repeating-linear-gradient(0deg,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.05) 3px 3px),
         radial-gradient(ellipse 100% 100% at 50% 50%,transparent 60%,rgba(0,0,0,.35));
@@ -65,18 +57,6 @@
     code,.y{color:var(--amber)}
     .shd{text-shadow:var(--hard)}
 
-    /* ── BOOT OVERLAY ─────────────────────────────────────────── */
-    #boot{position:fixed;inset:0;z-index:10000;background:#0a0806;color:var(--acc);
-      font-family:var(--mono);font-size:1.05rem;line-height:1.5;padding:6vh 6vw;overflow:hidden;
-      text-shadow:0 0 6px var(--accglow);cursor:pointer}
-    #boot .bl{white-space:pre-wrap;opacity:.9}
-    #boot .ok{color:var(--acc)} #boot .warn{color:var(--amber)} #boot .em{color:var(--text)}
-    #boot .skip{position:absolute;bottom:5vh;right:6vw;color:var(--dim);font-size:.85rem;text-shadow:none}
-    #boot.gone{animation:crtoff .5s ease-in forwards;pointer-events:none}
-    @keyframes crtoff{0%{opacity:1}60%{opacity:1;transform:scaleY(1)}
-      85%{transform:scaleY(.004);filter:brightness(4)}100%{opacity:0;transform:scaleY(0);visibility:hidden}}
-
-    /* ── shared window frame ──────────────────────────────────── */
     .win{position:relative;background:var(--sur);box-shadow:var(--hardlg);
       border-top:2px solid var(--bl);border-left:2px solid var(--bl);
       border-right:2px solid var(--bd);border-bottom:2px solid var(--bd)}
@@ -90,7 +70,6 @@
     .win-x{margin-left:auto;font-family:var(--head);font-size:.6rem;color:var(--dim)}
     .win-body{padding:1.6rem 1.4rem}
 
-    /* buttons */
     .btn{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--head);font-size:.72rem;
       text-transform:uppercase;text-decoration:none;border:0;padding:.7rem 1.1rem;background:var(--sur2);
       color:var(--text);cursor:pointer;box-shadow:var(--hard);
@@ -101,10 +80,9 @@
     .btn-go{background:var(--acc);color:#2a1c05;border-top-color:rgba(255,255,255,.5);border-left-color:rgba(255,255,255,.5);
       border-right-color:var(--acc2);border-bottom-color:var(--acc2)}
     .btn-go:hover{background:#ffca6a;color:#2a1c05}
-    /* keep global link :link/:visited colors from bleeding into buttons */
+    
     .btn:link,.btn:visited{color:var(--text)} .btn-go:link,.btn-go:visited{color:#2a1c05}
 
-    /* ── TOP BAR ──────────────────────────────────────────────── */
     #bar{position:sticky;top:0;z-index:500;display:flex;align-items:center;gap:1rem;
       padding:.5rem 1.1rem;background:rgba(28,28,28,.93);backdrop-filter:blur(4px);
       border-bottom:2px solid #000;box-shadow:0 2px 0 rgba(0,0,0,.5);font-family:var(--head);font-size:.64rem}
@@ -123,7 +101,6 @@
     #bar .reg:hover{background:#ffca6a;color:#2a1c05}
     #bar .mtog{display:none}
 
-    /* ── HERO ─────────────────────────────────────────────────── */
     #hero{position:relative;padding:3rem 1.3rem 0;overflow:hidden}
     #hero .glow{position:absolute;z-index:0;pointer-events:none;width:70vw;height:70vw;max-width:820px;max-height:820px;
       left:60%;top:34%;transform:translate(-50%,-50%);background:radial-gradient(ellipse,rgba(232,178,74,.08),transparent 60%);
@@ -152,7 +129,6 @@
     .hs span{font-size:.88rem;text-transform:uppercase;letter-spacing:.05em;color:var(--dim)}
     .hero-acts{display:flex;gap:.65rem;flex-wrap:wrap}
 
-    /* CRT countdown device */
     .hero-r{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.3rem}
     .crt{width:100%;max-width:440px;position:relative;background:linear-gradient(160deg,#3a3a3a,#232323);
       padding:1rem 1rem 1.3rem;border-radius:14px;box-shadow:var(--hardlg),inset 0 0 0 1px rgba(0,0,0,.4);
@@ -179,22 +155,19 @@
       border-top:1px solid rgba(232,178,74,.18);padding-top:.65rem}
     .crt-tgt .date-convert{color:rgba(232,178,74,.75);border-bottom:2px dotted rgba(232,178,74,.4);cursor:pointer}
     .crt-tgt .date-convert:hover{border-bottom-style:solid;color:var(--acc)}
-    .crt.live .crt-cmd{opacity:1;color:var(--acc)} /* live state styling hook */
+    .crt.live .crt-cmd{opacity:1;color:var(--acc)} 
 
-    /* ── TICKER ───────────────────────────────────────────────── */
     .tick-wrap{position:relative;margin-top:.4rem;overflow:hidden;background:var(--sur3);
       border-top:2px solid #000;border-bottom:2px solid #000;padding:.6rem 0}
     .tick{display:flex;width:max-content;animation:scroll 32s linear infinite}
     .tick:hover{animation-play-state:paused}
-    /* seamless marquee: each copy carries its trailing gap as right-padding, so the
-       seam spacing == internal spacing; -50% lands copy2 exactly where copy1 began */
+    
     .ti{display:flex;align-items:center;gap:2rem;padding:0 2rem 0 0;white-space:nowrap;font-size:1rem;
       text-transform:uppercase;color:var(--muted)}
     .ti b{font-family:var(--head);font-size:.88rem;color:var(--acc);text-shadow:var(--hard)}
     .ti .s{color:var(--subtle)}
     @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-    /* ── SECTION shell ────────────────────────────────────────── */
     .sec{padding:3.6rem 1.3rem}
     .wrap{max-width:1080px;margin:0 auto}
     .rise{opacity:0;transform:translateY(16px);transition:opacity .5s steps(6),transform .5s cubic-bezier(.16,1,.3,1)}
@@ -206,11 +179,9 @@
     .lede strong{color:var(--text)}
     .strike{text-decoration:line-through;text-decoration-color:var(--acc);text-decoration-thickness:4px;color:var(--dim)}
 
-    /* two-up organic row (flex-wrap, not rigid grid) */
     .row{display:flex;flex-wrap:wrap;gap:1.4rem;align-items:flex-start}
     .row>*{flex:1 1 380px}
 
-    /* terminal info (about) */
     .term{background:var(--screen);border:3px solid #0a0a0a;box-shadow:var(--hardlg),inset 0 0 30px rgba(0,0,0,.8);position:relative;overflow:hidden}
     .term::after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.22) 2px 3px)}
     .term .tb{padding:1.1rem 1rem;position:relative;z-index:1}
@@ -218,7 +189,6 @@
     .tl .p{color:var(--acc)}.tl .k{color:rgba(232,178,74,.55)}.tl .al{color:var(--red);text-shadow:0 0 5px rgba(255,91,91,.3)}.tl .w{color:#fff2da}
     .curi{display:inline-block;width:.55em;height:1em;background:var(--acc);vertical-align:middle;animation:blink 1.05s steps(1) infinite;box-shadow:0 0 6px var(--accglow)}
 
-    /* format: mission file + redacted dossier */
     .file{padding:1.5rem 1.4rem}
     .file .tag{font-family:var(--head);font-size:.56rem;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:.7rem}
     .file .ttl{font-family:var(--head);font-size:1.4rem;color:var(--text);text-shadow:var(--hard);margin-bottom:.3rem}
@@ -236,7 +206,6 @@
     .redact{background:#000;color:#000;padding:0 .2em;cursor:help;transition:color .12s;border-bottom:0}
     .redact:hover{color:var(--red)}
 
-    /* schedule: crontab */
     .cron{font-size:1.05rem;line-height:1.5}
     .cron .cmt{color:var(--dim)}
     .cron table{width:100%;border-collapse:collapse;margin-top:.4rem}
@@ -250,7 +219,6 @@
     .date-convert{color:var(--acc);border-bottom:2px dotted rgba(232,178,74,.45);cursor:pointer;white-space:nowrap}
     .date-convert:hover{border-bottom-style:solid}
 
-    /* categories: ls listing */
     .ls-cmd{color:var(--muted);font-size:1rem;margin-bottom:1rem}.ls-cmd b{color:var(--acc)}
     .ls{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.7rem}
     .lsi{display:flex;align-items:center;gap:.7rem;background:var(--sur2);padding:.75rem .85rem;box-shadow:var(--hard);
@@ -263,7 +231,6 @@
     .lsi .nm span{font-size:.82rem;color:var(--dim)}
     .lsi:hover .nm b{color:var(--acc)}
 
-    /* editions: dot-matrix printouts */
     .prints{display:flex;flex-wrap:wrap;gap:1.6rem}
     .print{flex:1 1 380px;background:#f2efe6;color:#1a1a1a;position:relative;padding:1.3rem 1.5rem 1.5rem;
       box-shadow:var(--hardlg);font-family:var(--mono);text-shadow:none;
@@ -281,7 +248,6 @@
     .print .wr i{font-family:var(--head);font-size:.56rem;font-style:normal;color:#b0392b;width:2.2rem;flex-shrink:0;padding-top:.12rem}
     .print .sub{font-family:var(--head);font-size:.5rem;text-transform:uppercase;color:#888;padding:.5rem 0 .1rem}
 
-    /* sponsors */
     .band{display:flex;align-items:center;gap:.9rem;margin:1.4rem 0 1rem}
     .band:first-child{margin-top:.4rem}
     .band .ln{flex:1;height:2px;background:var(--subtle)}
@@ -302,7 +268,6 @@
     .ad .tg{font-size:.86rem;text-transform:uppercase;color:var(--dim);line-height:1.3}
     .spcta{font-size:1.04rem;color:var(--muted);margin-top:1.6rem}
 
-    /* CTA */
     #cta{padding:5rem 1.3rem;text-align:center;position:relative;overflow:hidden;border-top:2px solid #000;background:var(--sur3)}
     #cta::before{content:'';position:absolute;inset:0;pointer-events:none;
       background-image:linear-gradient(rgba(232,178,74,.05) 2px,transparent 2px),linear-gradient(90deg,rgba(232,178,74,.05) 2px,transparent 2px);
@@ -316,7 +281,6 @@
     .cta-s{font-size:1.1rem;color:var(--muted);margin-bottom:1.8rem;line-height:1.4}
     .cta-b{display:flex;gap:.65rem;justify-content:center;flex-wrap:wrap}
 
-    /* FOOTER — old web */
     footer{background:var(--foot);border-top:2px solid #000;padding:2.4rem 1.3rem;text-align:center;color:var(--text)}
     .find{font-family:var(--head);font-size:.7rem;text-transform:uppercase;text-shadow:var(--hard);margin-bottom:1.1rem}
     .fl{display:flex;gap:.55rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.2rem}
@@ -332,18 +296,16 @@
     .legal{font-size:.86rem;color:var(--subtle);margin-top:.8rem}
     .legal .crt-note{color:var(--dim)}
 
-    /* toast */
     #toast{visibility:hidden;opacity:0;position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:9500;
       background:var(--sur2);color:var(--acc);font-family:var(--mono);font-size:1rem;padding:.7rem 1.1rem;
       box-shadow:var(--hardlg);border:2px solid #000;text-shadow:0 0 6px var(--accglow);transition:opacity .4s,bottom .4s,visibility 0s .4s}
     #toast.show{visibility:visible;opacity:1;bottom:42px;transition:opacity .4s,bottom .4s,visibility 0s}
 
-    /* ── PHYSICAL ARCADE BUTTON — press it. h7's take on the play button ── */
     .access{display:flex;flex-direction:column;align-items:center;gap:.8rem}
     .access .cap{font-family:var(--head);font-size:.62rem;text-transform:uppercase;color:var(--muted);
       background:var(--sur2);padding:.45rem .8rem;box-shadow:var(--hard);text-shadow:var(--hard);
       border-top:2px solid var(--bl);border-left:2px solid var(--bl);border-right:2px solid var(--bd);border-bottom:2px solid var(--bd)}
-    /* round coin-button: a true circle face + a thin dark lip below = depth, presses down */
+    
     .arcade{position:relative;display:inline-block;border:0;background:transparent;cursor:pointer;text-decoration:none;
       width:116px;height:126px;filter:drop-shadow(2px 3px 0 #000)}
     .arcade.sm{width:82px;height:90px}
@@ -361,15 +323,13 @@
     .arcade:hover .top{filter:brightness(1.06)}
     .arcade:active .top{transform:translateY(7px)}
     .arcade:focus-visible{outline:3px solid var(--acc);outline-offset:6px}
-    /* keyboard focus ring for every other control (arcade has its own above) */
+    
     a:focus-visible,button:focus-visible,.btn:focus-visible,#bar nav a:focus-visible,.fl a:focus-visible,.date-convert:focus-visible,#mtog:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 
-    /* glitch (konami) */
     .glitch{animation:glitch .35s steps(2) 3}
     @keyframes glitch{0%{transform:translate(0)}25%{transform:translate(-3px,2px);filter:hue-rotate(90deg)}
       50%{transform:translate(3px,-2px)}75%{transform:translate(-2px,-1px);filter:hue-rotate(-60deg)}100%{transform:translate(0)}}
 
-    /* ── RESPONSIVE ───────────────────────────────────────────── */
     @media (max-width:900px){
       .hero-wrap{grid-template-columns:1fr;gap:2rem}.hero-r{order:-1}
       #bar nav{display:none}
@@ -381,18 +341,11 @@
       #bar .clock,#bar .rec{display:none}
     }
     @media (max-width:600px){body{font-size:18px}.sec{padding:3rem 1rem}}
-    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rise{opacity:1;transform:none}#boot{display:none}}
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rise{opacity:1;transform:none}}
   </style>
 </head>
 <body>
 
-<!-- BOOT -->
-<div id="boot" aria-hidden="true">
-  <div id="bootlog"></div>
-  <div class="skip">[ click / scroll / any key to skip ]</div>
-</div>
-
-<!-- TOP BAR -->
 <header id="bar">
   <span class="prompt"><b>h7ctf</b>@2026:~<span class="cur">█</span></span>
   <span class="clock" id="clock">--:--:--</span>
@@ -410,7 +363,7 @@
 </header>
 
 <main>
-<!-- HERO -->
+
 <section id="hero">
   <div class="glow" id="glow"></div>
   <div class="hero-wrap">
@@ -485,7 +438,6 @@
   </div>
 </section>
 
-<!-- ABOUT -->
 <section class="sec" id="about">
   <div class="wrap">
     <div class="win rise">
@@ -515,7 +467,6 @@
   </div>
 </section>
 
-<!-- FORMAT -->
 <section class="sec" id="format">
   <div class="wrap">
     <h2 class="h rise" style="text-align:center">Two stages. <em>One champion.</em></h2>
@@ -557,7 +508,6 @@
   </div>
 </section>
 
-<!-- SCHEDULE -->
 <section class="sec" id="schedule">
   <div class="wrap">
     <div class="win rise">
@@ -591,7 +541,6 @@
   </div>
 </section>
 
-<!-- CATEGORIES / CHALLENGES -->
 <section class="sec" id="challs">
   <div class="wrap">
     <div class="win rise">
@@ -618,7 +567,6 @@
   </div>
 </section>
 
-<!-- PAST EDITIONS -->
 <section class="sec" id="past">
   <div class="wrap">
     <h2 class="h rise" style="text-align:center">Built on <em>two editions.</em></h2>
@@ -661,7 +609,6 @@
   </div>
 </section>
 
-<!-- SPONSORS -->
 <section class="sec" id="backers">
   <div class="wrap">
     <div class="win rise">
@@ -714,7 +661,6 @@
   </div>
 </section>
 
-<!-- CTA -->
 <section id="cta">
   <div class="cta-in">
     <p class="cta-pr rise"><b>h7ctf</b>@2026:~$ ./register --now</p>
@@ -736,7 +682,6 @@
 </section>
 </main>
 
-<!-- FOOTER -->
 <footer>
   <div class="find">Find us on:</div>
   <div class="fl">
@@ -756,60 +701,12 @@
 <div id="toast">[+] copied.</div>
 
 <script>
-// ── BOOT SEQUENCE ─────────────────────────────────────────────────────────
-(function(){
-  const boot = document.getElementById('boot');
-  if (!boot) return;
-  let done = false;
-  function finish(){ if (done) return; done = true; boot.classList.add('gone'); setTimeout(()=>boot.remove(), 520); }
-  const hardcap = setTimeout(finish, 4200); // overlay always clears, even if something below throws
-  try {
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce || sessionStorage.getItem('h7booted')) { clearTimeout(hardcap); boot.remove(); return; }
-    sessionStorage.setItem('h7booted','1');
-  } catch(e) { /* private/hardened browser: play the boot, just don't persist the flag */ }
-  const log = document.getElementById('bootlog');
-  const lines = [
-    ['H7-TEX BIOS v2.6 · (c) h7tex · POST','em'],
-    ['','p'],
-    ['cpu ......... 7 cores online','ok'],
-    ['mem ......... checking 65536K ... OK','ok'],
-    ['crt ......... phosphor amber · scanlines nominal','ok'],
-    ['net ......... resolving app.h7tex.com ... OK','ok'],
-    ['','p'],
-    ['mounting /ctf/2026 ...','p'],
-    ['loading h7ctf.service ...','p'],
-    ['  edition ... 3rd','ok'],
-    ['  quals ..... Sep 26–27 · online · 36h','ok'],
-    ['  finals .... Oct 24–25 · SRMIST Chennai · attack/defense','warn'],
-    ['  status .... REGISTRATION_OPEN','ok'],
-    ['','p'],
-    ['boot complete. welcome, operator.','em'],
-  ];
-  boot.addEventListener('click', finish);
-  window.addEventListener('keydown', finish, {once:true});
-  window.addEventListener('wheel', finish, {once:true, passive:true});
-  window.addEventListener('touchstart', finish, {once:true, passive:true});
-  let i = 0;
-  (function type(){
-    if (done) return;
-    if (i >= lines.length){ setTimeout(finish, 550); return; }
-    const [txt, cls] = lines[i++];
-    const d = document.createElement('div');
-    d.className = 'bl ' + (cls==='ok'?'ok':cls==='warn'?'warn':cls==='em'?'em':'');
-    d.textContent = txt || ' ';
-    log.appendChild(d);
-    setTimeout(type, txt ? 105 : 40);
-  })();
-})();
 
-// ── SYSTEM CLOCK ──────────────────────────────────────────────────────────
 const clk = document.getElementById('clock');
 function clock(){ if(!clk) return; const d=new Date();
   clk.textContent = [d.getHours(),d.getMinutes(),d.getSeconds()].map(n=>String(n).padStart(2,'0')).join(':'); }
 clock(); setInterval(clock, 1000);
 
-// ── COUNTDOWN (with states) ───────────────────────────────────────────────
 const qStart = new Date('2026-09-26T03:30:00Z');
 const qEnd   = new Date('2026-09-27T15:30:00Z');
 const cd = {d:document.getElementById('cd-d'),h:document.getElementById('cd-h'),m:document.getElementById('cd-m'),s:document.getElementById('cd-s')};
@@ -830,11 +727,9 @@ function tick(){
   setDigit(cd.m, String(Math.floor(diff%3600000/60000)).padStart(2,'0'));
   setDigit(cd.s, String(Math.floor(diff%60000/1000)).padStart(2,'0'));
 }
-// only flicker a digit that actually changed (phosphor refresh)
 function setDigit(el, val){ if (el.textContent !== val){ el.textContent = val; el.classList.remove('tk'); void el.offsetWidth; el.classList.add('tk'); } }
 tick(); setInterval(tick, 1000);
 
-// ── DATE-CONVERT: hover→local tz · click→copy unix ts + toast ──────────────
 const toast = document.getElementById('toast');
 function showToast(msg){ toast.textContent = msg; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 2400); }
 document.querySelectorAll('.date-convert').forEach(el=>{
@@ -854,7 +749,6 @@ document.querySelectorAll('.date-convert').forEach(el=>{
   });
 });
 
-// ── SCROLL REVEAL (fail-safe) ─────────────────────────────────────────────
 const riseEls = document.querySelectorAll('.rise');
 if ('IntersectionObserver' in window){
   const io = new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }); }, {threshold:.1});
@@ -862,7 +756,6 @@ if ('IntersectionObserver' in window){
   setTimeout(()=>riseEls.forEach(el=>el.classList.add('in')), 4500);
 } else riseEls.forEach(el=>el.classList.add('in'));
 
-// ── NAV: active state + mobile menu ───────────────────────────────────────
 const navA = document.querySelectorAll('#nav a[data-sec]');
 const nav = document.getElementById('nav'), mtog = document.getElementById('mtog');
 mtog.addEventListener('click', ()=>{ const open=nav.classList.toggle('open'); mtog.setAttribute('aria-expanded', open?'true':'false'); });
@@ -872,18 +765,15 @@ if ('IntersectionObserver' in window){
   ['about','format','schedule','challs','past','backers'].map(id=>document.getElementById(id)).filter(Boolean).forEach(el=>so.observe(el));
 }
 
-// ── HERO GLOW PARALLAX ────────────────────────────────────────────────────
 const glow = document.getElementById('glow'), hero = document.getElementById('hero');
 if (glow && hero && !matchMedia('(pointer:coarse)').matches){
-  const snap=(v,step)=>Math.round(v/step)*step; // coarse grid → reads as a phosphor beam, not a cursor spotlight
+  const snap=(v,step)=>Math.round(v/step)*step;
   hero.addEventListener('mousemove', e=>{ glow.style.left=snap(60+(e.clientX/innerWidth-.5)*9,3)+'%'; glow.style.top=snap(34+(e.clientY/innerHeight-.5)*7,3)+'%'; }, {passive:true});
 }
 
-// ── ODOMETER: nudge the visitor counter (for the bit) ─────────────────────
 try{ const key='h7visits'; let v=parseInt(localStorage.getItem(key)||'6',10)+1; localStorage.setItem(key,String(v));
   document.getElementById('odo').textContent = '#'+String(v).padStart(7,'0'); }catch(e){}
 
-// ── KONAMI — for the operators who still know the code ────────────────────
 const seq=[38,38,40,40,37,39,37,39,66,65]; let ki=0;
 window.addEventListener('keydown', e=>{
   ki = (e.keyCode===seq[ki]) ? ki+1 : (e.keyCode===seq[0]?1:0);
@@ -891,7 +781,6 @@ window.addEventListener('keydown', e=>{
     setTimeout(()=>document.body.classList.remove('glitch'), 1100);
     showToast('h7{k0n4m1_0p3r4t0r_d3t3ct3d} · now go register'); }
 });
-// there are two flags on this page. one is above. the other you have to earn.
 </script>
 </body>
 </html>
