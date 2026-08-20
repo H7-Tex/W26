@@ -228,14 +228,7 @@
     .flist{list-style:none;display:flex;flex-direction:column;gap:.32rem}
     .flist li{font-size:1rem;color:var(--muted);display:flex;gap:.55rem}.flist li::before{content:'>';color:var(--acc)}
     .win.q .win-bar{box-shadow:inset 0 -2px 0 var(--acc)}
-    .win.f{transform:rotate(-.6deg)} /* the dossier sits slightly askew, taped on */
     .win.f .win-bar{box-shadow:inset 0 -2px 0 var(--red)}
-    /* a strip of translucent masking tape holding the tilted dossier on */
-    .tape{position:absolute;top:-13px;left:50%;transform:translateX(-50%) rotate(-2.5deg);width:118px;height:26px;z-index:4;
-      background:linear-gradient(rgba(228,208,150,.16),rgba(228,208,150,.09));
-      box-shadow:0 1px 3px rgba(0,0,0,.45);opacity:.9}
-    .tape::before,.tape::after{content:'';position:absolute;top:0;bottom:0;width:1px;background:rgba(228,208,150,.28)}
-    .tape::before{left:0}.tape::after{right:0}
     .stamp{display:inline-block;font-family:var(--head);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;
       color:var(--red);border:2px solid rgba(255,91,91,.5);padding:.28rem .6rem;transform:rotate(-2.5deg);margin-bottom:.8rem;
       box-shadow:inset 0 0 0 1px rgba(255,91,91,.12);text-shadow:var(--hard)}
@@ -386,7 +379,7 @@
         border:2px solid #000;margin-left:auto;cursor:pointer}
       #bar .clock,#bar .rec{display:none}
     }
-    @media (max-width:600px){body{font-size:18px}.sec{padding:3rem 1rem}.win.f{transform:none}}
+    @media (max-width:600px){body{font-size:18px}.sec{padding:3rem 1rem}}
     @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rise{opacity:1;transform:none}#boot{display:none}}
   </style>
 </head>
@@ -544,7 +537,6 @@
         </div>
       </div>
       <div class="win f rise" style="transition-delay:.1s">
-        <div class="tape"></div>
         <div class="win-bar"><div class="win-dots"><span class="wd r"></span><span class="wd y"></span><span class="wd g"></span></div>
           <span class="win-name"><b>sudo cat</b> finals.eyes-only</span><span class="win-x">🔒</span></div>
         <div class="file">
@@ -755,7 +747,7 @@
   <div class="webring">◄ &nbsp;<a href="https://ctftime.org/team/281844" target="_blank" rel="noopener">the h7tex webring</a>&nbsp; ►</div>
   <div class="counter">you are player <span class="odo" id="odo">#0000007</span></div>
   <div class="legal">
-    <a href="mailto:abu@h7tex.com">abu@h7tex.com</a> · H7CTF 2026 · Organized by H7Tex · SRMIST Chennai<br>
+    <a href="mailto:abu@h7tex.com">abu@h7tex.com</a> · H7CTF 2026 · Organized by H7Tex<br>
     <span class="crt-note">India's most (un)serious CTF</span>
   </div>
 </footer>
