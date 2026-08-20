@@ -301,28 +301,17 @@
       box-shadow:var(--hardlg);border:2px solid #000;text-shadow:0 0 6px var(--accglow);transition:opacity .4s,bottom .4s,visibility 0s .4s}
     #toast.show{visibility:visible;opacity:1;bottom:42px;transition:opacity .4s,bottom .4s,visibility 0s}
 
-    .access{display:flex;flex-direction:column;align-items:center;gap:.8rem}
-    .access .cap{font-family:var(--head);font-size:.62rem;text-transform:uppercase;color:var(--muted);
-      background:var(--sur2);padding:.45rem .8rem;box-shadow:var(--hard);text-shadow:var(--hard);
-      border-top:2px solid var(--bl);border-left:2px solid var(--bl);border-right:2px solid var(--bd);border-bottom:2px solid var(--bd)}
-    
-    .arcade{position:relative;display:inline-block;border:0;background:transparent;cursor:pointer;text-decoration:none;
-      width:116px;height:126px;filter:drop-shadow(2px 3px 0 #000)}
-    .arcade.sm{width:82px;height:90px}
-    .arcade .base{position:absolute;top:10px;left:0;width:116px;height:116px;border-radius:50%;
-      background:linear-gradient(#6e4d13,#4a330d)}
-    .arcade.sm .base{top:8px;width:82px;height:82px}
-    .arcade .top{position:absolute;top:0;left:0;width:116px;height:116px;border-radius:50%;
-      background:radial-gradient(circle at 40% 32%,#ffe7ac,#eab653 55%,#cf9a34 100%);
-      box-shadow:inset 0 3px 6px rgba(255,255,255,.6),inset 0 -7px 11px rgba(110,72,12,.5),0 0 16px var(--accglow);
-      display:flex;align-items:center;justify-content:center;transition:transform .07s steps(2)}
-    .arcade.sm .top{width:82px;height:82px}
-    .arcade .top b{font-family:var(--pixel);font-size:1.35rem;color:#3a2807;line-height:1;
-      text-shadow:1px 1px 0 rgba(255,255,255,.45)}
-    .arcade.sm .top b{font-size:.9rem}
-    .arcade:hover .top{filter:brightness(1.06)}
-    .arcade:active .top{transform:translateY(7px)}
-    .arcade:focus-visible{outline:3px solid var(--acc);outline-offset:6px}
+    .arcade{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;
+      font-family:var(--pixel);font-size:1.05rem;text-transform:uppercase;letter-spacing:.02em;line-height:1;
+      color:#2a1c05;text-decoration:none;cursor:pointer;
+      padding:1.05rem 2rem;background:linear-gradient(#ffdc84,#e8b24a);border:2px solid #000;
+      box-shadow:0 6px 0 #a9791f,0 8px 0 #000;transition:transform .07s steps(2),box-shadow .07s steps(2)}
+    .arcade:link,.arcade:visited{color:#2a1c05}
+    .arcade.sm{font-size:.82rem;padding:.8rem 1.5rem;box-shadow:0 5px 0 #a9791f,0 7px 0 #000}
+    .arcade:hover{filter:brightness(1.05)}
+    .arcade:active{transform:translateY(6px);box-shadow:0 0 0 #a9791f,0 2px 0 #000}
+    .arcade.sm:active{transform:translateY(5px);box-shadow:0 0 0 #a9791f,0 2px 0 #000}
+    .arcade:focus-visible{outline:3px solid var(--acc);outline-offset:4px}
     
     a:focus-visible,button:focus-visible,.btn:focus-visible,#bar nav a:focus-visible,.fl a:focus-visible,.date-convert:focus-visible,#mtog:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 
@@ -331,7 +320,7 @@
       50%{transform:translate(3px,-2px)}75%{transform:translate(-2px,-1px);filter:hue-rotate(-60deg)}100%{transform:translate(0)}}
 
     @media (max-width:900px){
-      .hero-wrap{grid-template-columns:1fr;gap:2rem}.hero-r{order:-1}
+      .hero-wrap{grid-template-columns:1fr;gap:2rem}
       #bar nav{display:none}
       #bar nav.open{display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--sur);
         border-bottom:2px solid #000;padding:.4rem;gap:0}
@@ -383,7 +372,7 @@
         <div class="hs"><b>10</b><span>Categories</span></div>
       </div>
       <div class="hero-acts">
-        <a href="https://app.h7tex.com/events/h7ctf-2026" target="_blank" rel="noopener" class="btn btn-go">▶ ./register</a>
+        <a href="https://app.h7tex.com/events/h7ctf-2026" target="_blank" rel="noopener" class="arcade">▶ Register</a>
         <a href="#about" class="btn">explore ↓</a>
       </div>
     </div>
@@ -401,13 +390,6 @@
           </div>
           <div class="crt-tgt">start: <span class="date-convert" data-ts="2026-09-26T03:30:00Z">Sep 26, 2026 · 03:30 UTC</span></div>
         </div>
-      </div>
-
-      <div class="access" style="margin-top:1.4rem">
-        <span class="cap">Access site:</span>
-        <a class="arcade sm" href="https://app.h7tex.com/events/h7ctf-2026" target="_blank" rel="noopener" aria-label="Register — access the H7CTF 2026 event">
-          <span class="base"></span><span class="top"><b>▶</b></span>
-        </a>
       </div>
     </div>
   </div>
@@ -666,11 +648,8 @@
     <p class="cta-pr rise"><b>h7ctf</b>@2026:~$ ./register --now</p>
     <h2 class="cta-t rise" style="transition-delay:.04s">Ready to <em>compete?</em></h2>
     <p class="cta-s rise" style="transition-delay:.08s">Registration is open. Grab a team, pick a name, and show up.</p>
-    <div class="access rise" style="transition-delay:.1s;margin:0 auto 2rem">
-      <span class="cap">Access site: press to enter</span>
-      <a class="arcade" href="https://app.h7tex.com/events/h7ctf-2026" target="_blank" rel="noopener" aria-label="Register now — access the H7CTF 2026 event">
-        <span class="base"></span><span class="top"><b>▶</b></span>
-      </a>
+    <div class="rise" style="transition-delay:.1s;margin:0 auto 2rem;display:flex;justify-content:center">
+      <a class="arcade" href="https://app.h7tex.com/events/h7ctf-2026" target="_blank" rel="noopener">▶ Register Now</a>
     </div>
     <div class="cta-b rise" style="transition-delay:.14s">
       <a href="https://ctftime.org/team/281844" target="_blank" rel="noopener" class="btn">CTFTime ↗</a>
