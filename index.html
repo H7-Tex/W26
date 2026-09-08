@@ -338,6 +338,13 @@
       <p id="regMsg" class="regmsg" role="status" aria-live="polite"></p>
       <p class="fine">passwordless, we email you a magic link. already registered? <a class="link" href="https://app.h7tex.com/events/h7ctf-2026">sign in</a>.</p>
     </form>
+    <div id="regDone" hidden style="text-align:center;padding:.4rem 0 .2rem">
+      <div style="font-size:2.4rem;line-height:1">🎯</div>
+      <h3 style="font-size:1.6rem;font-weight:700;margin:.5rem 0">you're in.</h3>
+      <p class="modal-sub" id="regDoneMsg">check your email for a magic link to finish.</p>
+      <p class="modal-sub" style="margin-top:1.1rem">the whole ctf runs on discord: announcements, support, first-bloods. hop in.</p>
+      <a class="pill solid" style="margin-top:1.1rem;display:inline-block" href="https://discord.com/invite/3ZaFbQRY3C" target="_blank" rel="noopener">join the discord</a>
+    </div>
   </div>
 </div>
 
@@ -367,7 +374,7 @@
   // modal open/close
   var regModal=document.getElementById('regModal');
   function openReg(){if(!regModal)return;regModal.hidden=false;document.body.style.overflow='hidden';setTimeout(function(){var f=document.getElementById('rn');f&&f.focus();},60);}
-  function closeReg(){if(!regModal)return;regModal.hidden=true;document.body.style.overflow='';}
+  function closeReg(){if(!regModal)return;regModal.hidden=true;document.body.style.overflow='';var f=document.getElementById('regForm');if(f)f.style.display='';var d=document.getElementById('regDone');if(d)d.hidden=true;var m=document.getElementById('regMsg');if(m){m.textContent='';m.className='regmsg';}}
   document.querySelectorAll('[data-reg]').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();openReg();});});
   document.querySelectorAll('[data-reg-close]').forEach(function(b){b.addEventListener('click',closeReg);});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&regModal&&!regModal.hidden)closeReg();});
@@ -389,7 +396,7 @@
       .then(function(r){return r.json().catch(function(){return{};}).then(function(d){return{s:r.status,ok:r.ok,d:d};});})
       .then(function(res){
         btn.disabled=false;
-        if(res.ok){rmsg((res.d&&res.d.message)||'check your email for a magic link to finish. 🎯','ok');regForm.reset();}
+        if(res.ok){regForm.reset();regForm.style.display='none';var done=document.getElementById('regDone');if(done){var dm=document.getElementById('regDoneMsg');if(dm&&res.d&&res.d.message)dm.textContent=res.d.message;done.hidden=false;}}
         else if(res.s===409){rmsg('that email is already registered. check your inbox for the magic link.','err');}
         else if(res.s===429){rmsg('too many tries. give it a minute and go again.','err');}
         else if(res.s===422){rmsg((res.d&&res.d.message)||'please check your details and try again.','err');}
