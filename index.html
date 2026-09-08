@@ -375,7 +375,6 @@
   var EVENT_UUID = "1ecb8aca-5a79-43f5-85fd-7224146283bf"; // public h7ctf-2026 event id
   var TURNSTILE_SITEKEY = "0x4AAAAAACLhAKSUOUdEB2Pk"; // public Cloudflare Turnstile site key
   var REG_API = "https://app.h7tex.com/api/events/" + EVENT_UUID + "/register";
-  console.log('[h7reg] build v0.22 (success gated on body.success)');
   var refCode = new URLSearchParams(location.search).get('ref') || "";
   // modal open/close
   var regModal=document.getElementById('regModal');
@@ -414,14 +413,12 @@
     if(EVENT_UUID.indexOf('REPLACE')===0){rmsg('registration opens shortly, check back soon.','err');return;}
     var tk = (tsOn && window.turnstile && tsWidgetId!==null && turnstile.getResponse) ? (turnstile.getResponse(tsWidgetId)||"") : ((document.querySelector('[name="cf-turnstile-response"]')||{}).value||"");
     if(tsOn && !tk){rmsg('please complete the verification below.','err');renderTurnstile();return;}
-    console.log('[h7reg] submit; token attached:', !!tk, 'len:', tk.length);
     var payload={name:name,email:email,turnstile_token:tk,country:document.getElementById('rc').value.trim(),discord:document.getElementById('rd').value.trim(),organization:document.getElementById('rorg').value.trim(),participant_type:ptype,referral_code:refCode};
     var btn=regForm.querySelector('.regbtn');btn.style.minWidth=btn.offsetWidth+'px';btn.disabled=true;btn.dataset.orig=btn.dataset.orig||btn.textContent;btn.innerHTML='<span class="spin" aria-hidden="true"></span>';rmsg('','');
     fetch(REG_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
       .then(function(r){return r.json().catch(function(){return{};}).then(function(d){return{s:r.status,ok:r.ok,d:d};});})
       .then(function(res){
         btn.disabled=false;btn.textContent=btn.dataset.orig||'register';btn.style.minWidth='';
-        console.log('[h7reg] response status:', res.s, 'ok:', res.ok, 'body:', res.d);
         if(res.ok && res.d && res.d.success===true){regForm.reset();regForm.style.display='none';var t=document.getElementById('regTitle');if(t)t.style.display='none';var it=document.getElementById('regIntro');if(it)it.style.display='none';var done=document.getElementById('regDone');if(done)done.hidden=false;}
         else if(res.ok){rmsg('registration could not be confirmed. please try again.','err');}
         else if(res.s===409){rmsg('that email is already registered. check your inbox for the magic link.','err');}
