@@ -372,7 +372,7 @@
   var refCode = new URLSearchParams(location.search).get('ref') || "";
   // modal open/close
   var regModal=document.getElementById('regModal');
-  function openReg(){if(!regModal)return;regModal.hidden=false;document.body.style.overflow='hidden';setTimeout(function(){var f=document.getElementById('rn');f&&f.focus();},60);}
+  function openReg(){if(!regModal)return;regModal.hidden=false;document.body.style.overflow='hidden';renderTurnstile();setTimeout(function(){var f=document.getElementById('rn');f&&f.focus();},60);}
   function closeReg(){if(!regModal)return;regModal.hidden=true;document.body.style.overflow='';var f=document.getElementById('regForm');if(f)f.style.display='';var d=document.getElementById('regDone');if(d)d.hidden=true;var m=document.getElementById('regMsg');if(m){m.textContent='';m.className='regmsg';}}
   document.querySelectorAll('[data-reg]').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();openReg();});});
   document.querySelectorAll('[data-reg-close]').forEach(function(b){b.addEventListener('click',closeReg);});
@@ -380,7 +380,13 @@
   var ptype = "student";
   document.querySelectorAll('#ptype button').forEach(function(b){b.addEventListener('click',function(){document.querySelectorAll('#ptype button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');ptype=b.dataset.v;});});
   var tsOn = TURNSTILE_SITEKEY && TURNSTILE_SITEKEY.indexOf('REPLACE')!==0 && /(^|\.)h7tex\.com$/.test(location.hostname);
-  if(tsOn){var ts=document.createElement('script');ts.src="https://challenges.cloudflare.com/turnstile/v0/api.js";ts.async=ts.defer=true;document.head.appendChild(ts);document.getElementById('cf').setAttribute('data-sitekey',TURNSTILE_SITEKEY);}else{var cf=document.getElementById('cf');if(cf)cf.style.display='none';}
+  var tsWidgetId=null, tsTries=0;
+  if(tsOn){var ts=document.createElement('script');ts.src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";ts.async=true;ts.defer=true;document.head.appendChild(ts);}else{var cf=document.getElementById('cf');if(cf)cf.style.display='none';}
+  function renderTurnstile(){
+    if(!tsOn||tsWidgetId!==null) return;
+    if(window.turnstile && document.getElementById('cf')){ try{tsWidgetId=turnstile.render('#cf',{sitekey:TURNSTILE_SITEKEY,theme:'dark'});}catch(e){} return; }
+    if(tsTries++ < 30){ setTimeout(renderTurnstile,200); }
+  }
   var regForm=document.getElementById('regForm'), regMsg=document.getElementById('regMsg');
   function rmsg(t,c){regMsg.textContent=t;regMsg.className='regmsg'+(c?' '+c:'');}
   regForm&&regForm.addEventListener('submit',function(e){
@@ -388,7 +394,8 @@
     var name=document.getElementById('rn').value.trim(), email=document.getElementById('re').value.trim();
     if(!name||!email){rmsg('add your name and email to register.','err');return;}
     if(EVENT_UUID.indexOf('REPLACE')===0){rmsg('registration opens shortly, check back soon.','err');return;}
-    var tk=(document.querySelector('[name="cf-turnstile-response"]')||{}).value||"";
+    var tk = (tsOn && window.turnstile && tsWidgetId!==null && turnstile.getResponse) ? (turnstile.getResponse(tsWidgetId)||"") : ((document.querySelector('[name="cf-turnstile-response"]')||{}).value||"");
+    if(tsOn && !tk){rmsg('please complete the verification below.','err');renderTurnstile();return;}
     var payload={name:name,email:email,turnstile_token:tk,country:document.getElementById('rc').value.trim(),discord:document.getElementById('rd').value.trim(),organization:document.getElementById('rorg').value.trim(),participant_type:ptype,referral_code:refCode};
     var btn=regForm.querySelector('.regbtn');btn.disabled=true;rmsg('registering…','');
     fetch(REG_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
@@ -400,7 +407,7 @@
         else if(res.s===429){rmsg('too many tries. give it a minute and go again.','err');}
         else if(res.s===422){rmsg((res.d&&res.d.message)||'please check your details and try again.','err');}
         else{rmsg((res.d&&res.d.message)||'something went wrong. try again in a moment.','err');}
-        if(window.turnstile){try{turnstile.reset();}catch(_){}}
+        if(window.turnstile&&tsWidgetId!==null){try{turnstile.reset(tsWidgetId);}catch(_){}}
       })
       .catch(function(){btn.disabled=false;rmsg('network error. check your connection and try again.','err');});
   });
