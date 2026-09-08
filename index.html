@@ -89,6 +89,8 @@
   .seg button.on{background:var(--accent);color:var(--bg)}
   .regbtn{margin-top:.5rem;border:0;cursor:pointer;font-family:var(--font);font-size:1.05rem}
   .regbtn[disabled]{opacity:.6;cursor:default}
+  .spin{display:inline-block;width:1.05em;height:1.05em;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;vertical-align:-2px}
+  @keyframes spin{to{transform:rotate(360deg)}}
   .regmsg{margin-top:.9rem;font-size:1rem;min-height:1.2em}
   .regmsg.ok{color:#7bd88f}.regmsg.err{color:#ff6b6b}
   .fine{color:var(--muted);font-size:.92rem;margin-top:.9rem}
@@ -317,7 +319,7 @@
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="regTitle">
     <button class="modal-x" type="button" data-reg-close aria-label="Close">✕</button>
     <h2 id="regTitle">register</h2>
-    <p class="modal-sub">free entry, passwordless. just your name and email, we'll send a magic link to finish. everything else is optional.</p>
+    <p class="modal-sub" id="regIntro">free entry, passwordless. just your name and email, we'll send a magic link to finish. everything else is optional.</p>
     <form id="regForm" class="reg" novalidate>
       <div class="frow">
         <div class="field"><label for="rn">name</label><input id="rn" autocomplete="name" placeholder="ada lovelace" required></div>
@@ -337,12 +339,9 @@
       <p id="regMsg" class="regmsg" role="status" aria-live="polite"></p>
       <p class="fine">passwordless, we email you a magic link. already registered? <a class="link" href="https://app.h7tex.com/events/h7ctf-2026">sign in</a>.</p>
     </form>
-    <div id="regDone" hidden style="text-align:center;padding:.4rem 0 .2rem">
-      <div style="font-size:2.4rem;line-height:1">🎯</div>
-      <h3 style="font-size:1.6rem;font-weight:700;margin:.5rem 0">you're in.</h3>
-      <p class="modal-sub" id="regDoneMsg">check your email for a magic link to finish.</p>
-      <p class="modal-sub" style="margin-top:1.1rem">the whole ctf runs on discord: announcements, support, first-bloods. hop in.</p>
-      <a class="pill solid" style="margin-top:1.1rem;display:inline-block" href="https://discord.com/invite/3ZaFbQRY3C" target="_blank" rel="noopener">join the discord</a>
+    <div id="regDone" hidden style="text-align:center;padding:2rem 0 1.2rem">
+      <div style="font-size:2rem;line-height:1;color:var(--accent)">✓</div>
+      <p class="modal-sub" id="regDoneMsg" style="margin-top:.8rem">check your email to verify your account.</p>
     </div>
   </div>
 </div>
@@ -373,7 +372,7 @@
   // modal open/close
   var regModal=document.getElementById('regModal');
   function openReg(){if(!regModal)return;regModal.hidden=false;document.body.style.overflow='hidden';renderTurnstile();setTimeout(function(){var f=document.getElementById('rn');f&&f.focus();},60);}
-  function closeReg(){if(!regModal)return;regModal.hidden=true;document.body.style.overflow='';var f=document.getElementById('regForm');if(f)f.style.display='';var d=document.getElementById('regDone');if(d)d.hidden=true;var m=document.getElementById('regMsg');if(m){m.textContent='';m.className='regmsg';}}
+  function closeReg(){if(!regModal)return;regModal.hidden=true;document.body.style.overflow='';var f=document.getElementById('regForm');if(f)f.style.display='';var d=document.getElementById('regDone');if(d)d.hidden=true;var t=document.getElementById('regTitle');if(t)t.style.display='';var it=document.getElementById('regIntro');if(it)it.style.display='';var m=document.getElementById('regMsg');if(m){m.textContent='';m.className='regmsg';}var b=f&&f.querySelector('.regbtn');if(b){b.disabled=false;b.textContent=(b.dataset.orig||'register');b.style.minWidth='';}}
   document.querySelectorAll('[data-reg]').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();openReg();});});
   document.querySelectorAll('[data-reg-close]').forEach(function(b){b.addEventListener('click',closeReg);});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&regModal&&!regModal.hidden)closeReg();});
@@ -397,19 +396,19 @@
     var tk = (tsOn && window.turnstile && tsWidgetId!==null && turnstile.getResponse) ? (turnstile.getResponse(tsWidgetId)||"") : ((document.querySelector('[name="cf-turnstile-response"]')||{}).value||"");
     if(tsOn && !tk){rmsg('please complete the verification below.','err');renderTurnstile();return;}
     var payload={name:name,email:email,turnstile_token:tk,country:document.getElementById('rc').value.trim(),discord:document.getElementById('rd').value.trim(),organization:document.getElementById('rorg').value.trim(),participant_type:ptype,referral_code:refCode};
-    var btn=regForm.querySelector('.regbtn');btn.disabled=true;rmsg('registering…','');
+    var btn=regForm.querySelector('.regbtn');btn.style.minWidth=btn.offsetWidth+'px';btn.disabled=true;btn.dataset.orig=btn.dataset.orig||btn.textContent;btn.innerHTML='<span class="spin" aria-hidden="true"></span>';rmsg('','');
     fetch(REG_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
       .then(function(r){return r.json().catch(function(){return{};}).then(function(d){return{s:r.status,ok:r.ok,d:d};});})
       .then(function(res){
-        btn.disabled=false;
-        if(res.ok){regForm.reset();regForm.style.display='none';var done=document.getElementById('regDone');if(done){var dm=document.getElementById('regDoneMsg');if(dm&&res.d&&res.d.message)dm.textContent=res.d.message;done.hidden=false;}}
+        btn.disabled=false;btn.textContent=btn.dataset.orig||'register';btn.style.minWidth='';
+        if(res.ok){regForm.reset();regForm.style.display='none';var t=document.getElementById('regTitle');if(t)t.style.display='none';var it=document.getElementById('regIntro');if(it)it.style.display='none';var done=document.getElementById('regDone');if(done)done.hidden=false;}
         else if(res.s===409){rmsg('that email is already registered. check your inbox for the magic link.','err');}
         else if(res.s===429){rmsg('too many tries. give it a minute and go again.','err');}
         else if(res.s===422){rmsg((res.d&&res.d.message)||'please check your details and try again.','err');}
         else{rmsg((res.d&&res.d.message)||'something went wrong. try again in a moment.','err');}
         if(window.turnstile&&tsWidgetId!==null){try{turnstile.reset(tsWidgetId);}catch(_){}}
       })
-      .catch(function(){btn.disabled=false;rmsg('network error. check your connection and try again.','err');});
+      .catch(function(){btn.disabled=false;btn.textContent=btn.dataset.orig||'register';btn.style.minWidth='';rmsg('network error. check your connection and try again.','err');});
   });
 </script>
 </body>
