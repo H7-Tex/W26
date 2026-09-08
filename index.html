@@ -107,6 +107,9 @@
   .modal-x{position:absolute;top:.8rem;right:1rem;background:none;border:0;color:var(--muted);font-size:1.2rem;cursor:pointer;line-height:1;transition:color .2s}
   .modal-x:hover{color:var(--fg)}
   .modal .reg{margin-top:1.4rem;max-width:none}
+  .done-check{width:58px;height:58px;border-radius:50%;background:rgba(234,181,76,.12);border:2px solid var(--accent);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:1.9rem;margin:0 auto;animation:pop .42s cubic-bezier(.2,.8,.3,1.4)}
+  @keyframes pop{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
+  .done-h{font-size:1.7rem;font-weight:700;letter-spacing:-.02em;margin:.9rem 0 .35rem}
 
   /* format */
   .stages{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,5vw,3.5rem)}
@@ -339,9 +342,10 @@
       <p id="regMsg" class="regmsg" role="status" aria-live="polite"></p>
       <p class="fine">passwordless, we email you a magic link. already registered? <a class="link" href="https://app.h7tex.com/events/h7ctf-2026">sign in</a>.</p>
     </form>
-    <div id="regDone" hidden style="text-align:center;padding:2rem 0 1.2rem">
-      <div style="font-size:2rem;line-height:1;color:var(--accent)">✓</div>
-      <p class="modal-sub" id="regDoneMsg" style="margin-top:.8rem">check your email to verify your account.</p>
+    <div id="regDone" hidden style="text-align:center;padding:1.6rem 0 .8rem">
+      <div class="done-check">✓</div>
+      <div class="done-h">you're on the board.</div>
+      <p class="modal-sub" id="regDoneMsg">check your email to verify your account.</p>
     </div>
   </div>
 </div>
