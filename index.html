@@ -81,9 +81,17 @@
   .field{margin-bottom:1rem}
   .field label{display:block;font-size:.9rem;color:var(--muted);margin-bottom:.4rem;font-weight:500}
   .field label .opt{color:var(--faint);font-weight:400}
-  .field input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--fg);font-family:var(--font);font-size:1.05rem;padding:.72rem .9rem;outline:none;transition:border-color .2s}
+  .field input,.field select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--fg);font-family:var(--font);font-size:1.05rem;padding:.72rem .9rem;outline:none;transition:border-color .2s;color-scheme:dark}
   .field input::placeholder{color:var(--faint)}
-  .field input:focus{border-color:var(--accent)}
+  .field input:focus,.field select:focus{border-color:var(--accent)}
+  .field select{cursor:pointer;appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 54%,calc(100% - 13px) 54%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:2rem}
+  .dc-row{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+  .dc-btn{background:#5865F2;color:#fff;border:0;border-radius:10px;font-family:var(--font);font-weight:600;font-size:1rem;padding:.62rem 1.1rem;cursor:pointer;transition:filter .2s}
+  .dc-btn:hover{filter:brightness(1.12)}
+  .dc-btn[disabled]{opacity:.6;cursor:default}
+  .dc-status{color:var(--faint);font-size:.92rem}
+  .dc-status.ok{color:#7bd88f}
+  .dc-status.err{color:#ff6b6b}
   .ehint{margin-top:.4rem;font-size:.88rem;color:var(--muted)}
   .ehint b{color:var(--accent);cursor:pointer;font-weight:600;text-decoration:underline;text-underline-offset:2px}
   .frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
@@ -336,10 +344,13 @@
         <div class="seg" id="ptype"><button type="button" class="on" data-v="student">student</button><button type="button" data-v="professional">professional</button></div>
       </div>
       <div class="frow">
-        <div class="field"><label for="rorg">college / org <span class="opt">(optional)</span></label><input id="rorg" placeholder="srm institute of science &amp; technology"></div>
-        <div class="field"><label for="rc">country <span class="opt">(optional)</span></label><input id="rc" placeholder="india"></div>
+        <div class="field"><label for="rorg">college / org</label><input id="rorg" placeholder="srm institute of science &amp; technology"></div>
+        <div class="field"><label for="rc">country</label><select id="rc"><option value="">select…</option></select></div>
       </div>
-      <div class="field"><label for="rd">discord <span class="opt">(optional)</span></label><input id="rd" placeholder="@handle"></div>
+      <div class="field">
+        <label>discord</label>
+        <div class="dc-row"><button type="button" id="dcBtn" class="dc-btn">connect discord</button><span id="dcStatus" class="dc-status">not connected</span></div>
+      </div>
       <div id="cf" class="cf-turnstile" style="margin:.2rem 0 .6rem"></div>
       <button type="submit" class="pill solid regbtn">register</button>
       <p id="regMsg" class="regmsg" role="status" aria-live="polite"></p>
@@ -385,6 +396,16 @@
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&regModal&&!regModal.hidden)closeReg();});
   var ptype = "student";
   document.querySelectorAll('#ptype button').forEach(function(b){b.addEventListener('click',function(){document.querySelectorAll('#ptype button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');ptype=b.dataset.v;});});
+
+  // ---- required fields + discord oauth (option B) ----
+  var DISCORD_REQUIRED = false; // flip to true when CTF26-1 flips backend discord_required
+  var discordToken = "";
+  var COUNTRIES=["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Côte d'Ivoire","Croatia","Cuba","Cyprus","Czechia","Democratic Republic of the Congo","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe","Other"];
+  (function(){var sel=document.getElementById('rc');if(sel&&sel.tagName==='SELECT'){var f=document.createDocumentFragment();for(var i=0;i<COUNTRIES.length;i++){var o=document.createElement('option');o.value=COUNTRIES[i];o.textContent=COUNTRIES[i];f.appendChild(o);}sel.appendChild(f);}})();
+  var dcBtn=document.getElementById('dcBtn'), dcStatus=document.getElementById('dcStatus');
+  function dcSet(t,c){if(dcStatus){dcStatus.textContent=t;dcStatus.className='dc-status'+(c?' '+c:'');}}
+  dcBtn&&dcBtn.addEventListener('click',function(){var u='https://app.h7tex.com/api/auth/discord/authorize?origin='+encodeURIComponent('https://2026.h7tex.com');var w=window.open(u,'discord','width=520,height=760');if(!w){dcSet('popup blocked, allow popups and retry','err');return;}dcSet('opening discord…','');});
+  window.addEventListener('message',function(ev){if(ev.origin!=='https://app.h7tex.com')return;var d=ev.data||{};if(d.type==='discord_verified'){discordToken=d.token||'';dcSet('✓ '+(d.username||d.global_name||'connected'),'ok');if(dcBtn)dcBtn.textContent='reconnect';clearErr();}else if(d.type==='discord_error'){discordToken='';var m=d.error==='account_too_new'?('discord account must be '+(d.min_days||7)+'+ days old'):(d.error==='no_code'||d.error==='access_denied')?'discord connection cancelled':'discord connection failed, please retry';dcSet(m,'err');}});
   var tsOn = TURNSTILE_SITEKEY && TURNSTILE_SITEKEY.indexOf('REPLACE')!==0 && /(^|\.)h7tex\.com$/.test(location.hostname);
   var tsWidgetId=null, tsTries=0;
   if(tsOn){var ts=document.createElement('script');ts.src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";ts.async=true;ts.defer=true;document.head.appendChild(ts);}else{var cf=document.getElementById('cf');if(cf)cf.style.display='none';}
@@ -413,7 +434,13 @@
     if(EVENT_UUID.indexOf('REPLACE')===0){rmsg('registration opens shortly, check back soon.','err');return;}
     var tk = (tsOn && window.turnstile && tsWidgetId!==null && turnstile.getResponse) ? (turnstile.getResponse(tsWidgetId)||"") : ((document.querySelector('[name="cf-turnstile-response"]')||{}).value||"");
     if(tsOn && !tk){rmsg('please complete the verification below.','err');renderTurnstile();return;}
-    var payload={name:name,email:email,turnstile_token:tk,country:document.getElementById('rc').value.trim(),discord:document.getElementById('rd').value.trim(),organization:document.getElementById('rorg').value.trim(),participant_type:ptype,referral_code:refCode};
+    var rcVal=document.getElementById('rc').value, orgVal=document.getElementById('rorg').value.trim();
+    if(DISCORD_REQUIRED){
+      if(!rcVal){rmsg('please select your country.','err');return;}
+      if(!orgVal){rmsg('please add your college or organization.','err');return;}
+      if(!discordToken){rmsg('please connect your discord to register.','err');return;}
+    }
+    var payload={name:name,email:email,turnstile_token:tk,country:rcVal,participant_type:ptype,organization:orgVal,discord_verify_token:discordToken,referral_code:refCode};
     var btn=regForm.querySelector('.regbtn');btn.style.minWidth=btn.offsetWidth+'px';btn.disabled=true;btn.dataset.orig=btn.dataset.orig||btn.textContent;btn.innerHTML='<span class="spin" aria-hidden="true"></span>';rmsg('','');
     fetch(REG_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
       .then(function(r){return r.json().catch(function(){return{};}).then(function(d){return{s:r.status,ok:r.ok,d:d};});})
