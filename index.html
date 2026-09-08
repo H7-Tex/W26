@@ -83,6 +83,8 @@
   .field input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--fg);font-family:var(--font);font-size:1.05rem;padding:.72rem .9rem;outline:none;transition:border-color .2s}
   .field input::placeholder{color:var(--faint)}
   .field input:focus{border-color:var(--accent)}
+  .ehint{margin-top:.4rem;font-size:.88rem;color:var(--muted)}
+  .ehint b{color:var(--accent);cursor:pointer;font-weight:600;text-decoration:underline;text-underline-offset:2px}
   .frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
   .seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
   .seg button{background:transparent;color:var(--muted);border:0;font-family:var(--font);font-weight:600;font-size:.95rem;padding:.6rem 1.25rem;cursor:pointer;transition:background .2s,color .2s}
@@ -326,7 +328,7 @@
     <form id="regForm" class="reg" novalidate>
       <div class="frow">
         <div class="field"><label for="rn">name</label><input id="rn" autocomplete="name" placeholder="ada lovelace" required></div>
-        <div class="field"><label for="re">email</label><input id="re" type="email" autocomplete="email" placeholder="you@campus.edu" required></div>
+        <div class="field"><label for="re">email</label><input id="re" type="email" autocomplete="email" placeholder="you@campus.edu" required><div class="ehint" id="emailHint" hidden></div></div>
       </div>
       <div class="field">
         <label>you're a…</label>
@@ -393,6 +395,14 @@
   }
   var regForm=document.getElementById('regForm'), regMsg=document.getElementById('regMsg');
   function rmsg(t,c){regMsg.textContent=t;regMsg.className='regmsg'+(c?' '+c:'');}
+  // email typo catcher (mailcheck-style, no lib)
+  var EMAIL_DOMAINS=['gmail.com','googlemail.com','yahoo.com','yahoo.co.in','hotmail.com','outlook.com','icloud.com','proton.me','protonmail.com','live.com','aol.com','ymail.com','me.com','mail.com','zoho.com'];
+  function _lev(a,b){var m=a.length,n=b.length,i,j,c,t,p=[];for(j=0;j<=n;j++)p[j]=j;for(i=1;i<=m;i++){c=p[0];p[0]=i;for(j=1;j<=n;j++){t=p[j];p[j]=Math.min(p[j]+1,p[j-1]+1,c+(a.charCodeAt(i-1)===b.charCodeAt(j-1)?0:1));c=t;}}return p[n];}
+  function _suggestEmail(v){v=(v||'').trim().toLowerCase();var at=v.lastIndexOf('@');if(at<1||at===v.length-1)return null;var u=v.slice(0,at),d=v.slice(at+1);if(!d||EMAIL_DOMAINS.indexOf(d)>=0)return null;var best=null,bd=99;for(var i=0;i<EMAIL_DOMAINS.length;i++){var k=_lev(d,EMAIL_DOMAINS[i]);if(k<bd){bd=k;best=EMAIL_DOMAINS[i];}}return (best&&bd>0&&bd<=2)?(u+'@'+best):null;}
+  var reInput=document.getElementById('re'), eHint=document.getElementById('emailHint');
+  function checkEmailTypo(){if(!reInput||!eHint)return;var s=_suggestEmail(reInput.value);if(!s){eHint.hidden=true;return;}eHint.textContent='did you mean ';var b=document.createElement('b');b.textContent=s;b.tabIndex=0;b.setAttribute('role','button');b.addEventListener('click',function(){reInput.value=s;eHint.hidden=true;reInput.focus();});eHint.appendChild(b);eHint.appendChild(document.createTextNode('?'));eHint.hidden=false;}
+  reInput&&reInput.addEventListener('blur',checkEmailTypo);
+  reInput&&reInput.addEventListener('input',function(){if(eHint)eHint.hidden=true;});
   regForm&&regForm.addEventListener('submit',function(e){
     e.preventDefault();
     var name=document.getElementById('rn').value.trim(), email=document.getElementById('re').value.trim();
