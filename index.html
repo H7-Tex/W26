@@ -400,13 +400,16 @@
   function _lev(a,b){var m=a.length,n=b.length,i,j,c,t,p=[];for(j=0;j<=n;j++)p[j]=j;for(i=1;i<=m;i++){c=p[0];p[0]=i;for(j=1;j<=n;j++){t=p[j];p[j]=Math.min(p[j]+1,p[j-1]+1,c+(a.charCodeAt(i-1)===b.charCodeAt(j-1)?0:1));c=t;}}return p[n];}
   function _suggestEmail(v){v=(v||'').trim().toLowerCase();var at=v.lastIndexOf('@');if(at<1||at===v.length-1)return null;var u=v.slice(0,at),d=v.slice(at+1);if(!d||EMAIL_DOMAINS.indexOf(d)>=0)return null;var best=null,bd=99;for(var i=0;i<EMAIL_DOMAINS.length;i++){var k=_lev(d,EMAIL_DOMAINS[i]);if(k<bd){bd=k;best=EMAIL_DOMAINS[i];}}return (best&&bd>0&&bd<=2)?(u+'@'+best):null;}
   var reInput=document.getElementById('re'), eHint=document.getElementById('emailHint');
-  function checkEmailTypo(){if(!reInput||!eHint)return;var s=_suggestEmail(reInput.value);if(!s){eHint.hidden=true;return;}eHint.textContent='did you mean ';var b=document.createElement('b');b.textContent=s;b.tabIndex=0;b.setAttribute('role','button');b.addEventListener('click',function(){reInput.value=s;eHint.hidden=true;reInput.focus();});eHint.appendChild(b);eHint.appendChild(document.createTextNode('?'));eHint.hidden=false;}
+  function clearErr(){if(regMsg&&regMsg.textContent){regMsg.textContent='';regMsg.className='regmsg';}}
+  function checkEmailTypo(){if(!reInput||!eHint)return;var s=_suggestEmail(reInput.value);if(!s){eHint.hidden=true;return;}eHint.textContent='did you mean ';var b=document.createElement('b');b.textContent=s;b.tabIndex=0;b.setAttribute('role','button');b.addEventListener('click',function(){reInput.value=s;eHint.hidden=true;clearErr();reInput.focus();});eHint.appendChild(b);eHint.appendChild(document.createTextNode('?'));eHint.hidden=false;}
   reInput&&reInput.addEventListener('blur',checkEmailTypo);
   reInput&&reInput.addEventListener('input',function(){if(eHint)eHint.hidden=true;});
+  regForm&&regForm.addEventListener('input',clearErr);
   regForm&&regForm.addEventListener('submit',function(e){
     e.preventDefault();
     var name=document.getElementById('rn').value.trim(), email=document.getElementById('re').value.trim();
     if(!name||!email){rmsg('add your name and email to register.','err');return;}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){rmsg('please enter a valid email address.','err');document.getElementById('re').focus();return;}
     if(EVENT_UUID.indexOf('REPLACE')===0){rmsg('registration opens shortly, check back soon.','err');return;}
     var tk = (tsOn && window.turnstile && tsWidgetId!==null && turnstile.getResponse) ? (turnstile.getResponse(tsWidgetId)||"") : ((document.querySelector('[name="cf-turnstile-response"]')||{}).value||"");
     if(tsOn && !tk){rmsg('please complete the verification below.','err');renderTurnstile();return;}
