@@ -83,22 +83,23 @@
   .field label .opt{color:var(--faint);font-weight:400}
   .field input,.field select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--fg);font-family:var(--font);font-size:1.05rem;padding:.72rem .9rem;outline:none;transition:border-color .2s;color-scheme:dark}
   .field input::placeholder{color:var(--faint)}
-  .field input:focus,.field select:focus{border-color:var(--accent)}
+  .field input:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(234,181,76,.16)}
   .field select{cursor:pointer;appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 54%,calc(100% - 13px) 54%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:2rem}
-  .dc-row{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
-  .dc-btn{background:#5865F2;color:#fff;border:0;border-radius:10px;font-family:var(--font);font-weight:600;font-size:1rem;padding:.62rem 1.1rem;cursor:pointer;transition:filter .2s}
-  .dc-btn:hover{filter:brightness(1.12)}
+  .dc-btn{display:flex;align-items:center;justify-content:center;gap:.55rem;width:100%;background:#5865F2;color:#fff;border:0;border-radius:10px;font-family:var(--font);font-weight:600;font-size:1rem;padding:.75rem 1.1rem;cursor:pointer;transition:filter .2s,transform .15s}
+  .dc-btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
   .dc-btn[disabled]{opacity:.6;cursor:default}
-  .dc-status{color:var(--faint);font-size:.92rem}
+  .dc-btn svg{width:19px;height:19px;flex:none}
+  .dc-btn.connected{background:#43b581}
+  .dc-status{color:var(--faint);font-size:.88rem;margin-top:.45rem}
   .dc-status.ok{color:#7bd88f}
   .dc-status.err{color:#ff6b6b}
   .ehint{margin-top:.4rem;font-size:.88rem;color:var(--muted)}
   .ehint b{color:var(--accent);cursor:pointer;font-weight:600;text-decoration:underline;text-underline-offset:2px}
   .frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-  .seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
-  .seg button{background:transparent;color:var(--muted);border:0;font-family:var(--font);font-weight:600;font-size:.95rem;padding:.6rem 1.25rem;cursor:pointer;transition:background .2s,color .2s}
+  .seg{display:flex;width:100%;border:1px solid var(--line);border-radius:11px;padding:4px;gap:4px;background:var(--bg)}
+  .seg button{flex:1;background:transparent;color:var(--muted);border:0;border-radius:8px;font-family:var(--font);font-weight:600;font-size:.95rem;padding:.55rem;cursor:pointer;transition:background .2s,color .2s}
   .seg button.on{background:var(--accent);color:var(--bg)}
-  .regbtn{margin-top:.5rem;border:0;cursor:pointer;font-family:var(--font);font-size:1.05rem}
+  .regbtn{width:100%;margin-top:.6rem;border:0;cursor:pointer;font-family:var(--font);font-size:1.08rem;padding:.92rem;font-weight:700;justify-content:center}
   .regbtn[disabled]{opacity:.6;cursor:default}
   .spin{display:inline-block;width:1.05em;height:1.05em;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;vertical-align:-2px}
   @keyframes spin{to{transform:rotate(360deg)}}
@@ -111,10 +112,11 @@
   .modal[hidden]{display:none}
   .modal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:1.2rem;animation:mfade .18s ease}
   @keyframes mfade{from{opacity:0}to{opacity:1}}
-  .modal-backdrop{position:absolute;inset:0;background:rgba(9,7,4,.76);backdrop-filter:blur(3px)}
-  .modal-card{position:relative;z-index:1;width:100%;max-width:520px;max-height:92vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(1.6rem,4vw,2.4rem);box-shadow:0 24px 70px rgba(0,0,0,.55)}
-  .modal-card h2{font-size:clamp(1.8rem,5vw,2.4rem);margin-bottom:.5rem}
-  .modal-sub{color:var(--muted);font-size:1.05rem;line-height:1.45}
+  @keyframes cardin{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}
+  .modal-backdrop{position:absolute;inset:0;background:rgba(9,7,4,.78);backdrop-filter:blur(4px)}
+  .modal-card{position:relative;z-index:1;width:100%;max-width:480px;max-height:92vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(1.75rem,4.5vw,2.5rem);box-shadow:0 30px 80px rgba(0,0,0,.6);animation:cardin .3s cubic-bezier(.2,.8,.3,1)}
+  .modal-card h2{font-size:1.9rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.35rem}
+  .modal-sub{color:var(--muted);font-size:1.02rem;line-height:1.45}
   .modal-x{position:absolute;top:.8rem;right:1rem;background:none;border:0;color:var(--muted);font-size:1.2rem;cursor:pointer;line-height:1;transition:color .2s}
   .modal-x:hover{color:var(--fg)}
   .modal .reg{margin-top:1.4rem;max-width:none}
@@ -349,7 +351,8 @@
       </div>
       <div class="field">
         <label>discord</label>
-        <div class="dc-row"><button type="button" id="dcBtn" class="dc-btn">connect discord</button><span id="dcStatus" class="dc-status">not connected</span></div>
+        <button type="button" id="dcBtn" class="dc-btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg><span>connect discord</span></button>
+        <div id="dcStatus" class="dc-status">we verify you via discord</div>
       </div>
       <div id="cf" class="cf-turnstile" style="margin:.2rem 0 .6rem"></div>
       <button type="submit" class="pill solid regbtn">register</button>
@@ -403,9 +406,10 @@
   var COUNTRIES=["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Côte d'Ivoire","Croatia","Cuba","Cyprus","Czechia","Democratic Republic of the Congo","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe","Other"];
   (function(){var sel=document.getElementById('rc');if(sel&&sel.tagName==='SELECT'){var f=document.createDocumentFragment();for(var i=0;i<COUNTRIES.length;i++){var o=document.createElement('option');o.value=COUNTRIES[i];o.textContent=COUNTRIES[i];f.appendChild(o);}sel.appendChild(f);}})();
   var dcBtn=document.getElementById('dcBtn'), dcStatus=document.getElementById('dcStatus');
+  var dcBtnDefault=dcBtn?dcBtn.innerHTML:'';
   function dcSet(t,c){if(dcStatus){dcStatus.textContent=t;dcStatus.className='dc-status'+(c?' '+c:'');}}
   dcBtn&&dcBtn.addEventListener('click',function(){var u='https://app.h7tex.com/api/auth/discord/authorize?origin='+encodeURIComponent('https://2026.h7tex.com');var w=window.open(u,'discord','width=520,height=760');if(!w){dcSet('popup blocked, allow popups and retry','err');return;}dcSet('opening discord…','');});
-  window.addEventListener('message',function(ev){if(ev.origin!=='https://app.h7tex.com')return;var d=ev.data||{};if(d.type==='discord_verified'){discordToken=d.token||'';dcSet('✓ '+(d.username||d.global_name||'connected'),'ok');if(dcBtn)dcBtn.textContent='reconnect';clearErr();}else if(d.type==='discord_error'){discordToken='';var m=d.error==='account_too_new'?('discord account must be '+(d.min_days||7)+'+ days old'):(d.error==='no_code'||d.error==='access_denied')?'discord connection cancelled':'discord connection failed, please retry';dcSet(m,'err');}});
+  window.addEventListener('message',function(ev){if(ev.origin!=='https://app.h7tex.com')return;var d=ev.data||{};if(d.type==='discord_verified'){discordToken=d.token||'';var h=d.username||d.global_name||'connected';if(dcBtn){dcBtn.classList.add('connected');dcBtn.innerHTML='';var sp=document.createElement('span');sp.textContent='✓ '+h;dcBtn.appendChild(sp);}dcSet('discord connected','ok');clearErr();}else if(d.type==='discord_error'){discordToken='';if(dcBtn){dcBtn.classList.remove('connected');dcBtn.innerHTML=dcBtnDefault;}var m=d.error==='account_too_new'?('discord account must be '+(d.min_days||7)+'+ days old'):(d.error==='no_code'||d.error==='access_denied')?'discord connection cancelled':'discord connection failed, please retry';dcSet(m,'err');}});
   var tsOn = TURNSTILE_SITEKEY && TURNSTILE_SITEKEY.indexOf('REPLACE')!==0 && /(^|\.)h7tex\.com$/.test(location.hostname);
   var tsWidgetId=null, tsTries=0;
   if(tsOn){var ts=document.createElement('script');ts.src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";ts.async=true;ts.defer=true;document.head.appendChild(ts);}else{var cf=document.getElementById('cf');if(cf)cf.style.display='none';}
