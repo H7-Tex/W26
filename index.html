@@ -389,6 +389,7 @@
   var EVENT_UUID = "1ecb8aca-5a79-43f5-85fd-7224146283bf"; // public h7ctf-2026 event id
   var TURNSTILE_SITEKEY = "0x4AAAAAACLhAKSUOUdEB2Pk"; // public Cloudflare Turnstile site key
   var REG_API = "https://app.h7tex.com/api/events/" + EVENT_UUID + "/register";
+  console.log('[h7reg] build v0.31 (diagnostic)');
   var refCode = new URLSearchParams(location.search).get('ref') || "";
   // modal open/close
   var regModal=document.getElementById('regModal');
@@ -432,6 +433,7 @@
   regForm&&regForm.addEventListener('input',clearErr);
   regForm&&regForm.addEventListener('submit',function(e){
     e.preventDefault();
+    console.log('[h7reg] register clicked');
     var name=document.getElementById('rn').value.trim(), email=document.getElementById('re').value.trim();
     if(!name||!email){rmsg('add your name and email to register.','err');return;}
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){rmsg('please enter a valid email address.','err');document.getElementById('re').focus();return;}
@@ -445,11 +447,13 @@
       if(!discordToken){rmsg('please connect your discord to register.','err');return;}
     }
     var payload={name:name,email:email,turnstile_token:tk,country:rcVal,participant_type:ptype,organization:orgVal,discord_verify_token:discordToken,referral_code:refCode};
+    console.log('[h7reg] POSTing -> turnstile:'+tk.length+' discord:'+discordToken.length+' country:'+rcVal+' org:'+(orgVal.length>0));
     var btn=regForm.querySelector('.regbtn');btn.style.minWidth=btn.offsetWidth+'px';btn.disabled=true;btn.dataset.orig=btn.dataset.orig||btn.textContent;btn.innerHTML='<span class="spin" aria-hidden="true"></span>';rmsg('','');
     fetch(REG_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
       .then(function(r){return r.json().catch(function(){return{};}).then(function(d){return{s:r.status,ok:r.ok,d:d};});})
       .then(function(res){
         btn.disabled=false;btn.textContent=btn.dataset.orig||'register';btn.style.minWidth='';
+        console.log('[h7reg] response:', res.s, res.ok, res.d);
         if(res.ok && res.d && res.d.success===true){regForm.reset();regForm.style.display='none';var t=document.getElementById('regTitle');if(t)t.style.display='none';var it=document.getElementById('regIntro');if(it)it.style.display='none';var done=document.getElementById('regDone');if(done)done.hidden=false;}
         else if(res.ok){rmsg('registration could not be confirmed. please try again.','err');}
         else if(res.s===409){rmsg('that email is already registered. check your inbox for the magic link.','err');}
